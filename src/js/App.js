@@ -5,6 +5,7 @@ import HomeView from "./views/Home";
 import RegisterView from "./views/Register";
 import LoginView from "./views/Login";
 import SettingsView from "./views/Settings";
+import ChatView from "./views/Chat";
 
 import Navbar from "./components/Navbar";
 
@@ -21,6 +22,9 @@ const App = () => {
           </Route>
           <Route path="/register">
             <RegisterView />
+          </Route>
+          <Route path="/chat">
+            <ChatView />
           </Route>
           <Route path="/">
             <HomeView />

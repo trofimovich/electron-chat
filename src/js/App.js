@@ -1,9 +1,8 @@
 import React from "react";
+import HomeView from "./views/Home";
 
 const App = () => {
-  const title = "Hello World";
-
-  return <h1>{title}</h1>;
+  return <HomeView />;
 };
 
 export default App;

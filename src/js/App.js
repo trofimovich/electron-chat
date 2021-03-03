@@ -23,10 +23,10 @@ const App = () => {
           <Route path="/register">
             <RegisterView />
           </Route>
-          <Route path="/chat">
+          <Route path="/chat/:id">
             <ChatView />
           </Route>
-          <Route path="/">
+          <Route path="/" exact>
             <HomeView />
           </Route>
         </Switch>

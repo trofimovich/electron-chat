@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 
 const Navbar = () => {
   const history = useHistory();
+
   return (
     <div className="chat-navbar">
       <nav className="chat-navbar-inner">

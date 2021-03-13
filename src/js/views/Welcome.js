@@ -2,22 +2,16 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 
-import LoadingView from "../components/shared/LoadingView";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 
 const Welcome = () => {
   const [isLoginView, setIsLogin] = useState(true);
   const user = useSelector(({ auth }) => auth.user);
-  const isChecking = useSelector(({ auth }) => auth.isChecking);
 
   const optInText = isLoginView
     ? ["Need an account", "Register"]
     : ["Already registered?", "Login"];
-
-  if (isChecking) {
-    return <LoadingView message="Loading..." />;
-  }
 
   if (user) {
     return <Redirect to="/home" />;

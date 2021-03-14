@@ -5,7 +5,6 @@ import {
   Switch,
   Route,
   Redirect,
-  useHistory,
 } from "react-router-dom";
 
 import { listenToAuthChanges } from "./actions/auth";
@@ -15,6 +14,7 @@ import HomeView from "./views/Home";
 import WelcomeView from "./views/Welcome";
 import SettingsView from "./views/Settings";
 import ChatView from "./views/Chat";
+import ChatCreate from "./views/ChatCreate";
 
 import LoadingView from "./components/shared/LoadingView";
 import { listenToConnectionChanges } from "./actions/app";
@@ -67,7 +67,6 @@ const ChatApp = () => {
   return (
     <Router>
       <ContentWrapper>
-        {isOnline.toString()}
         <Switch>
           <Route path="/" exact>
             <WelcomeView />
@@ -80,6 +79,9 @@ const ChatApp = () => {
           </AuthRoute>
           <AuthRoute path="/chat/:id">
             <ChatView />
+          </AuthRoute>
+          <AuthRoute path="/chatCreate">
+            <ChatCreate />
           </AuthRoute>
         </Switch>
       </ContentWrapper>

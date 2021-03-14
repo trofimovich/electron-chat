@@ -22,7 +22,10 @@ export const loginUser = ({ email, password }) => (dispatch) => {
 
 export const logout = () => (dispatch) => {
   dispatch({ type: "AUTH_LOGOUT_INIT" });
-  return api.logout().then((_) => dispatch({ type: "AUTH_LOGOUT_SUCCESS" }));
+  return api.logout().then((_) => {
+    dispatch({ type: "AUTH_LOGOUT_SUCCESS" });
+    dispatch({ type: "CHATS_FETCH_RESTART" });
+  });
 };
 
 export const listenToAuthChanges = () => (dispatch) => {

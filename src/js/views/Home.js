@@ -12,16 +12,18 @@ import Notification from "../utils/notifications";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const chats = useSelector(({ chats }) => chats.items);
+  const joinedChats = useSelector(({ chats }) => chats.joined);
+  const availableChats = useSelector(({ chats }) => chats.available);
+  const userId = useSelector(({ auth }) => auth.user.uid);
 
   useEffect(() => {
-    dispatch(fetchChats());
+    dispatch(fetchChats(userId));
     Notification.setup();
   }, [dispatch]);
   return (
     <div className="row no-gutters fh">
       <div className="col-3 fh">
-        <JoinedChatsList chats={chats} />
+        <JoinedChatsList chats={joinedChats} />
       </div>
       <div className="col-9 fh">
         <ViewTitle text="Choose your channel">
@@ -30,7 +32,7 @@ const Home = () => {
           </Link>
         </ViewTitle>
         <div className="container-fluid">
-          <AvailableChatsList chats={chats} />
+          <AvailableChatsList chats={availableChats} />
         </div>
       </div>
     </div>

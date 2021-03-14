@@ -7,6 +7,7 @@ import AvailableChatsList from "../components/AvailableChatsList";
 import ViewTitle from "../components/shared/ViewTitle";
 
 import { fetchChats } from "../actions/chats";
+import Notification from "../utils/notifications";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(fetchChats());
+    Notification.setup();
   }, [dispatch]);
   return (
     <div className="row no-gutters fh">

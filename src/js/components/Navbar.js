@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import { logout } from "../actions/auth";
+import BackButton from "./shared/BackButton";
 
-const Navbar = () => {
+const Navbar = ({ canGoBack }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector(({ auth }) => auth.user);
@@ -13,12 +14,8 @@ const Navbar = () => {
     <div className="chat-navbar">
       <nav className="chat-navbar-inner">
         <div className="chat-navbar-inner-left">
-          <button
-            className="btn btn-outline-primary"
-            onClick={() => history.goBack()}
-          >
-            Back
-          </button>
+          {canGoBack && <BackButton />}
+
           <button
             onClick={() => history.push("/settings")}
             className="btn btn-outline-success ml-2"
@@ -27,12 +24,6 @@ const Navbar = () => {
           </button>
         </div>
         <div className="chat-navbar-inner-right">
-          <button
-            onClick={() => history.push("/")}
-            className="btn btn-outline-success ml-2 mr-2"
-          >
-            Login
-          </button>
           {user && (
             <>
               <img className="avatar mr-2" src={user.avatar}></img>

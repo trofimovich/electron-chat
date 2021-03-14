@@ -16,7 +16,6 @@ import WelcomeView from "./views/Welcome";
 import SettingsView from "./views/Settings";
 import ChatView from "./views/Chat";
 
-import Navbar from "./components/Navbar";
 import LoadingView from "./components/shared/LoadingView";
 
 const ContentWrapper = ({ children }) => (
@@ -70,7 +69,6 @@ const ChatApp = () => {
           </AuthRoute>
         </Switch>
       </ContentWrapper>
-      <Navbar />
     </Router>
   );
 };

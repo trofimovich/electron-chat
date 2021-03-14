@@ -17,6 +17,7 @@ import SettingsView from "./views/Settings";
 import ChatView from "./views/Chat";
 
 import LoadingView from "./components/shared/LoadingView";
+import { listenToConnectionChanges } from "./actions/app";
 
 const ContentWrapper = ({ children }) => (
   <div className="content-wrapper">{children}</div>
@@ -25,7 +26,6 @@ const ContentWrapper = ({ children }) => (
 const AuthRoute = ({ children, ...rest }) => {
   const user = useSelector(({ auth }) => auth.user);
   const onlyChild = React.Children.only(children);
-  const history = useHistory();
   return (
     <Route
       {...rest}
@@ -43,9 +43,22 @@ const AuthRoute = ({ children, ...rest }) => {
 const ChatApp = () => {
   const dispatch = useDispatch();
   const isChecking = useSelector(({ auth }) => auth.isChecking);
+  const isOnline = useSelector(({ app }) => app.isOnline);
   useEffect(() => {
-    dispatch(listenToAuthChanges());
+    const unsubscribeFromAuth = dispatch(listenToAuthChanges());
+    const unsubscribeFromConnection = dispatch(listenToConnectionChanges());
+
+    return () => {
+      unsubscribeFromAuth();
+      unsubscribeFromConnection();
+    };
   }, [dispatch]);
+
+  if (!isOnline) {
+    return (
+      <LoadingView message="Application has been disconnected from the internet. Please reconnect" />
+    );
+  }
 
   if (isChecking) {
     return <LoadingView />;
@@ -54,6 +67,7 @@ const ChatApp = () => {
   return (
     <Router>
       <ContentWrapper>
+        {isOnline.toString()}
         <Switch>
           <Route path="/" exact>
             <WelcomeView />

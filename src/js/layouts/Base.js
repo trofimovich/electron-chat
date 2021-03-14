@@ -10,4 +10,19 @@ const BaseLayout = ({ children, ...props }) => {
   );
 };
 
+const getDisplayName = (Component) =>
+  Component.displayName || Component.name || "Component";
+
+export const withBaseLayout = (Component, config) => {
+  return (props) => {
+    const viewName = getDisplayName(Component);
+    return (
+      <>
+        <Navbar {...config} view={viewName} />
+        <Component {...props} />
+      </>
+    );
+  };
+};
+
 export default BaseLayout;

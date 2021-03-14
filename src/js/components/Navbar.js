@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import { logout } from "../actions/auth";
 import BackButton from "./shared/BackButton";
 
-const Navbar = ({ canGoBack }) => {
+const Navbar = ({ canGoBack, view }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const user = useSelector(({ auth }) => auth.user);
@@ -15,13 +15,14 @@ const Navbar = ({ canGoBack }) => {
       <nav className="chat-navbar-inner">
         <div className="chat-navbar-inner-left">
           {canGoBack && <BackButton />}
-
-          <button
-            onClick={() => history.push("/settings")}
-            className="btn btn-outline-success ml-2"
-          >
-            Settings
-          </button>
+          {view !== "Settings" && (
+            <button
+              onClick={() => history.push("/settings")}
+              className="btn btn-outline-success ml-2"
+            >
+              Settings
+            </button>
+          )}
         </div>
         <div className="chat-navbar-inner-right">
           {user && (

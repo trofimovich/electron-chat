@@ -36,6 +36,24 @@ export const createChat = (formData, userId) => async (dispatch) => {
   const chatId = await api.createChat(newChat);
   dispatch({ type: "CHATS_CREATE_SUCCESS" });
   await api.joinChat(userId, chatId);
-  dispatch({ type: "CHATS_JOIN_SUCCESS" });
+  dispatch({ type: "CHATS_JOIN_SUCCESS", chat: { ...newChat, id: chatId } });
   return chatId;
 };
+
+export const joinChat = (chat, userId) => async (dispatch) => {
+  await api.joinChat(userId, chat.id);
+  dispatch({ type: "CHATS_JOIN_SUCCESS", chat });
+};
+
+export const subscribeToChat = (chatId) => (dispatch) =>
+  api.subscribeToChat(chatId, async (chat) => {
+    const joinedUsers = await Promise.all(
+      chat.joinedUsers.map(async (userRef) => {
+        const userSnapshot = await userRef.get();
+        return userSnapshot.data();
+      })
+    );
+
+    chat.joinedUsers = joinedUsers;
+    dispatch({ type: "CHATS_SET_ACTIVE_CHAT", chat });
+  });

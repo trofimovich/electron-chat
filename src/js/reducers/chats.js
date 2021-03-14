@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { createReducer } from "@reduxjs/toolkit";
 
 const createChatsReducer = () => {
   const joined = (state = [], action) => {
@@ -7,6 +8,8 @@ const createChatsReducer = () => {
         return [];
       case "CHATS_FETCH_SUCCESS":
         return action.joined;
+      case "CHATS_JOIN_SUCCESS":
+        return [...state, action.chat];
       default:
         return state;
     }
@@ -18,12 +21,24 @@ const createChatsReducer = () => {
         return [];
       case "CHATS_FETCH_SUCCESS":
         return action.available;
+      case "CHATS_JOIN_SUCCESS":
+        return state.filter((chat) => chat.id !== action.chat.id);
       default:
         return state;
     }
   };
 
-  return combineReducers({ joined, available });
+  const activeChats = createReducer(
+    {},
+    {
+      CHATS_SET_ACTIVE_CHAT: (state, action) => {
+        const { chat } = action;
+        state[chat.id] = chat;
+      },
+    }
+  );
+
+  return combineReducers({ joined, available, activeChats });
 };
 
 export default createChatsReducer();

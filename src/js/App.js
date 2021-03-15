@@ -18,6 +18,7 @@ import ChatCreate from "./views/ChatCreate";
 
 import LoadingView from "./components/shared/LoadingView";
 import { listenToConnectionChanges } from "./actions/app";
+import { checkUserConnection } from "./actions/connection";
 
 const ContentWrapper = ({ children }) => (
   <div className="content-wrapper">{children}</div>
@@ -44,15 +45,29 @@ const ChatApp = () => {
   const dispatch = useDispatch();
   const isChecking = useSelector(({ auth }) => auth.isChecking);
   const isOnline = useSelector(({ app }) => app.isOnline);
+  const user = useSelector(({ auth }) => auth.user);
   useEffect(() => {
     const unsubscribeFromAuth = dispatch(listenToAuthChanges());
     const unsubscribeFromConnection = dispatch(listenToConnectionChanges());
+    const unsubscribeFromUserConnection = dispatch(checkUserConnection());
 
     return () => {
       unsubscribeFromAuth();
       unsubscribeFromConnection();
+      unsubscribeFromUserConnection();
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    let unsubscribeFromUserConnection;
+    if (user?.uid) {
+      unsubscribeFromUserConnection = dispatch(checkUserConnection(user.uid));
+    }
+
+    return () => {
+      unsubscribeFromUserConnection && unsubscribeFromUserConnection();
+    };
+  });
 
   if (!isOnline) {
     return (
